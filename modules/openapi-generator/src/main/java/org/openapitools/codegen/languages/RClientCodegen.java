@@ -125,7 +125,6 @@ public class RClientCodegen extends DefaultCodegen implements CodegenConfig {
         languageSpecificPrimitives.add("numeric");
         languageSpecificPrimitives.add("character");
         languageSpecificPrimitives.add("data.frame");
-        languageSpecificPrimitives.add("object");
 
         typeMapping.clear();
         typeMapping.put("integer", "integer");
@@ -143,8 +142,6 @@ public class RClientCodegen extends DefaultCodegen implements CodegenConfig {
         typeMapping.put("file", "data.frame");
         typeMapping.put("binary", "data.frame");
         typeMapping.put("ByteArray", "character");
-        typeMapping.put("map", "map");
-        typeMapping.put("object", "object");
 
         importMapping.clear();
         cliOptions.clear();
