@@ -92,11 +92,11 @@
         {{/isContainer}}
         {{#isContainer}}
         {{#isPrimitiveType}}
-        stopifnot(is.vector(`{{baseName}}`), length(`{{baseName}}`) != 0)
+        stopifnot(is.vector(`{{baseName}}`))
         sapply(`{{baseName}}`, function(x) stopifnot(is.character(x)))
         {{/isPrimitiveType}}
         {{^isPrimitiveType}}
-        stopifnot(is.vector(`{{baseName}}`), length(`{{baseName}}`) != 0)
+        stopifnot(is.vector(`{{baseName}}`))
         sapply(`{{baseName}}`, function(x) stopifnot(R6::is.R6(x)))
         {{/isPrimitiveType}}
         {{/isContainer}}
@@ -176,7 +176,7 @@
         {{/isListContainer}}
         {{#isMapContainer}}
         {{#isPrimitiveType}}
-          {{#isNumeric}}%d{{/isNumeric}}{{^isNumeric}}"%s"{{/isNumeric}}
+          {{#isNumeric}}%d{{/isNumeric}}{{^isNumeric}}%s{{/isNumeric}}
         {{/isPrimitiveType}}
         {{^isPrimitiveType}}%s
         {{/isPrimitiveType}}

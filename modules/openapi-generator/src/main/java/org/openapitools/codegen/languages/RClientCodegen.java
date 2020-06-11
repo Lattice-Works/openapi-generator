@@ -125,7 +125,6 @@ public class RClientCodegen extends DefaultCodegen implements CodegenConfig {
         languageSpecificPrimitives.add("numeric");
         languageSpecificPrimitives.add("character");
         languageSpecificPrimitives.add("data.frame");
-        languageSpecificPrimitives.add("object");
 
         typeMapping.clear();
         typeMapping.put("integer", "integer");
@@ -143,8 +142,6 @@ public class RClientCodegen extends DefaultCodegen implements CodegenConfig {
         typeMapping.put("file", "data.frame");
         typeMapping.put("binary", "data.frame");
         typeMapping.put("ByteArray", "character");
-        typeMapping.put("map", "map");
-        typeMapping.put("object", "object");
 
         importMapping.clear();
         cliOptions.clear();
@@ -406,7 +403,7 @@ public class RClientCodegen extends DefaultCodegen implements CodegenConfig {
             sanitizedOperationId = "call_" + sanitizedOperationId;
         }
 
-        return camelize(sanitizedOperationId);
+        return underscore(sanitizedOperationId);
     }
 
     @Override
@@ -585,7 +582,7 @@ public class RClientCodegen extends DefaultCodegen implements CodegenConfig {
         if (example == null) {
             example = "NULL";
         } else if (Boolean.TRUE.equals(p.isListContainer)) {
-            example = "[" + example + "]";
+            example = "list(" + example + ")";
         } else if (Boolean.TRUE.equals(p.isMapContainer)) {
             example = "{'key' => " + example + "}";
         }
