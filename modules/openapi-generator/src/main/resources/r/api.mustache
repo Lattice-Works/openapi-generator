@@ -213,13 +213,53 @@
       {{#hasBodyParam}}
       {{#bodyParams}}
       if (!missing(`{{paramName}}`)) {
-        {{#isListContainer}}
-        body.items = paste(unlist(lapply({{paramName}}, function(param){param$toJSONString()})), collapse = ",")
-        body <- paste0('[', body.items, ']')
-        {{/isListContainer}}
-        {{^isListContainer}}
-        body <- `{{paramName}}`$toJSONString()
-        {{/isListContainer}}
+        body <- sprintf(
+        '
+        {{#isContainer}}
+          {{#isListContainer}}
+            {{#isPrimitiveType}}
+               {{#isNumeric}}[%d]{{/isNumeric}}{{^isNumeric}}[%s]{{/isNumeric}}
+            {{/isPrimitiveType}}
+            {{^isPrimitiveType}}[%s]
+            {{/isPrimitiveType}}
+          {{/isListContainer}}
+          {{#isMapContainer}}
+            {{#isPrimitiveType}}
+              {{#isNumeric}}%d{{/isNumeric}}{{^isNumeric}}%s{{/isNumeric}}
+            {{/isPrimitiveType}}
+            {{^isPrimitiveType}}%s
+            {{/isPrimitiveType}}
+          {{/isMapContainer}}
+          {{/isContainer}}
+          {{^isContainer}}
+          {{#isPrimitiveType}}
+            {{#isNumeric}}%d{{/isNumeric}}{{^isNumeric}}"%s"{{/isNumeric}}
+          {{/isPrimitiveType}}
+          {{^isPrimitiveType}}%s
+          {{/isPrimitiveType}}
+        {{/isContainer}}',
+        {{#isContainer}}
+          {{#isListContainer}}
+            {{#isPrimitiveType}}
+              paste(unlist(lapply(`{{paramName}}`, function(x) paste0('"', x, '"'))), collapse=",")
+            {{/isPrimitiveType}}
+            {{^isPrimitiveType}}
+              paste(sapply(`{{paramName}}`, function(x) jsonlite::toJSON(x$toJSON(), auto_unbox=TRUE, digits = NA)), collapse=",")
+            {{/isPrimitiveType}}
+          {{/isListContainer}}
+          {{#isMapContainer}}
+              jsonlite::toJSON(`{{paramName}}`, digits=NA)
+          {{/isMapContainer}}
+        {{/isContainer}}
+        {{^isContainer}}
+          {{#isPrimitiveType}}
+            `{{paramName}}`
+          {{/isPrimitiveType}}
+          {{^isPrimitiveType}}
+            jsonlite::toJSON(`{{paramName}}`$toJSON(), auto_unbox=TRUE, digits = NA)
+          {{/isPrimitiveType}}
+        {{/isContainer}}
+        )
       } else {
         body <- NULL
       }
