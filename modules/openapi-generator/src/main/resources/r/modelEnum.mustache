@@ -16,7 +16,7 @@
             private$value <- val
         },
         toJSON = function() {
-            jsonlite::toJSON(private$value, auto_unbox = TRUE)
+            jsonlite::toJSON(private$value, auto_unbox = FALSE)
         },
         fromJSON = function({{classname}}Json) {
             private$value <- jsonlite::fromJSON({{classname}}Json,
@@ -25,7 +25,7 @@
         },
         toJSONString = function() {
             as.character(jsonlite::toJSON(private$value,
-                auto_unbox = TRUE))
+                auto_unbox = FALSE))
         },
         fromJSONString = function({{classname}}Json) {
             private$value <- jsonlite::fromJSON({{classname}}Json,

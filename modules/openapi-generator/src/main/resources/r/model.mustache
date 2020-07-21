@@ -161,7 +161,7 @@
         {{/isPrimitiveType}}
         {{^isPrimitiveType}}
         {{baseName}}Object <- {{dataType}}$new()
-        {{baseName}}Object$fromJSON(jsonlite::toJSON({{classname}}Object${{baseName}}, auto_unbox = TRUE, digits = NA))
+        {{baseName}}Object$fromJSON(jsonlite::toJSON({{classname}}Object${{baseName}}, auto_unbox = FALSE, digits = NA))
         self$`{{baseName}}` <- {{baseName}}Object
         {{/isPrimitiveType}}
         {{/isContainer}}
@@ -204,15 +204,15 @@
         paste(unlist(lapply(self$`{{{baseName}}}`, function(x) paste0('"', x, '"'))), collapse=",")
         {{/isPrimitiveType}}
         {{^isPrimitiveType}}
-        paste(sapply(self$`{{{baseName}}}`, function(x) jsonlite::toJSON(x$toJSON(), auto_unbox=TRUE, digits = NA)), collapse=",")
+        paste(sapply(self$`{{{baseName}}}`, function(x) jsonlite::toJSON(x$toJSON(), auto_unbox=FALSE, digits = NA)), collapse=",")
         {{/isPrimitiveType}}
         {{/isListContainer}}
         {{#isMapContainer}}
         {{#isPrimitiveType}}
-        jsonlite::toJSON(lapply(self$`{{{baseName}}}`, function(x){ x }), auto_unbox = TRUE, digits=NA)
+        jsonlite::toJSON(lapply(self$`{{{baseName}}}`, function(x){ x }), auto_unbox = FALSE, digits=NA)
         {{/isPrimitiveType}}
         {{^isPrimitiveType}}
-        jsonlite::toJSON(lapply(self$`{{{baseName}}}`, function(x){ x$toJSON() }), auto_unbox = TRUE, digits=NA)
+        jsonlite::toJSON(lapply(self$`{{{baseName}}}`, function(x){ x$toJSON() }), auto_unbox = FALSE, digits=NA)
         {{/isPrimitiveType}}
         {{/isMapContainer}}
         {{/isContainer}}
@@ -221,7 +221,7 @@
         self$`{{baseName}}`
         {{/isPrimitiveType}}
         {{^isPrimitiveType}}
-        jsonlite::toJSON(self$`{{baseName}}`$toJSON(), auto_unbox=TRUE, digits = NA)
+        jsonlite::toJSON(self$`{{baseName}}`$toJSON(), auto_unbox=FALSE, digits = NA)
         {{/isPrimitiveType}}
         {{/isContainer}}
         )}{{#hasMore}},{{/hasMore}}
@@ -242,7 +242,7 @@
       self$`{{baseName}}` <- {{classname}}Object$`{{baseName}}`
       {{/isPrimitiveType}}
       {{^isPrimitiveType}}
-      self$`{{baseName}}` <- {{dataType}}$new()$fromJSON(jsonlite::toJSON({{classname}}Object${{baseName}}, auto_unbox = TRUE, digits = NA))
+      self$`{{baseName}}` <- {{dataType}}$new()$fromJSON(jsonlite::toJSON({{classname}}Object${{baseName}}, auto_unbox = FALSE, digits = NA))
       {{/isPrimitiveType}}
       {{/isContainer}}
       {{/vars}}

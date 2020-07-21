@@ -165,7 +165,7 @@ ApiClient  <- R6::R6Class(
         returnType <- get(returnType, envir = as.environment(pkgEnv))
         returnObj <- returnType$new()
         returnObj$fromJSON(
-          jsonlite::toJSON(obj, digits = NA, auto_unbox = TRUE)
+          jsonlite::toJSON(obj, digits = NA, auto_unbox = FALSE)
         )
       } 
 
