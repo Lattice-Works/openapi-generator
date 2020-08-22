@@ -244,7 +244,13 @@
               paste(unlist(lapply(`{{paramName}}`, function(x) paste0('"', x, '"'))), collapse=",")
             {{/isPrimitiveType}}
             {{^isPrimitiveType}}
-              paste(sapply(`{{paramName}}`, function(x) jsonlite::toJSON(x$toJSON(), auto_unbox=TRUE, digits = NA)), collapse=",")
+              paste(sapply(`{{paramName}}`, function(x) {
+                    if ('toJSONString' %in% names(x)) {
+                        x$toJSONString()
+                    } else {
+                        jsonlite::toJSON(x$toJSON(), auto_unbox=FALSE, digits = NA)
+                    }
+                    }), collapse=",")
             {{/isPrimitiveType}}
           {{/isListContainer}}
           {{#isMapContainer}}
@@ -256,7 +262,11 @@
             `{{paramName}}`
           {{/isPrimitiveType}}
           {{^isPrimitiveType}}
-            jsonlite::toJSON(`{{paramName}}`$toJSON(), auto_unbox=TRUE, digits = NA)
+                  if ('toJSONString' %in% names(`{{paramName}}`)) {
+                    `{{paramName}}`$toJSONString()
+                  } else {
+                    jsonlite::toJSON(`{{paramName}}`$toJSON(), auto_unbox=FALSE, digits = NA)
+                  }
           {{/isPrimitiveType}}
         {{/isContainer}}
         )
